@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
 import SignUp from "./SignUp";
+
 export default function Login() {
   const [emailIsInvalid, setEmailIsInvalid] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
 
   const email = useRef();
   const password = useRef();
@@ -22,6 +24,14 @@ export default function Login() {
     setEmailIsInvalid(false);
   }
 
+  function handleSignUpClick() {
+    setShowSignUp(true);
+  }
+
+  if (showSignUp) {
+    return <SignUp />;
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <h2>Login</h2>
@@ -40,8 +50,16 @@ export default function Login() {
       </div>
 
       <p className="form-actions">
-        <button className="button button-flat">Sign Up</button>
-        <button className="button">Login</button>
+        <button
+          type="button"
+          className="button button-flat"
+          onClick={handleSignUpClick}
+        >
+          Sign Up
+        </button>
+        <button type="submit" className="button">
+          Login
+        </button>
       </p>
     </form>
   );
