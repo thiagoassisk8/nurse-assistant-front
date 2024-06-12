@@ -1,37 +1,46 @@
-import React, { useState } from "react";
-import Signup from "./SignUp";
-
+import { useRef, useState } from "react";
+import SignUp from "./SignUp";
 export default function Login() {
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [emailIsInvalid, setEmailIsInvalid] = useState(false);
 
-  if (isSignUp) {
-    return <Signup />;
+  const email = useRef();
+  const password = useRef();
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const enteredEmail = email.current.value;
+    const enteredPassword = password.current.value;
+
+    const emailIsValid = enteredEmail.includes("@");
+
+    if (!emailIsValid) {
+      setEmailIsInvalid(true);
+      return;
+    }
+
+    setEmailIsInvalid(false);
   }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h2>Login</h2>
 
       <div className="control-row">
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" />
+          <input id="email" type="email" name="email" ref={email} />
+          <div>{emailIsInvalid && <p>Please enter valid value</p>}</div>
         </div>
 
         <div className="control no-margin">
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" />
+          <input id="password" type="password" name="password" ref={password} />
         </div>
       </div>
 
       <p className="form-actions">
-        <button
-          type="button"
-          className="button button-flat"
-          onClick={() => setIsSignUp(true)}
-        >
-          Don't have an account?
-        </button>
+        <button className="button button-flat">Sign Up</button>
         <button className="button">Login</button>
       </p>
     </form>
