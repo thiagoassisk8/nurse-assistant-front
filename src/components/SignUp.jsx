@@ -1,7 +1,9 @@
 import { useState } from "react";
+import useHttp from "../hooks/useHttp.js";
 
 export default function Signup() {
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
+  const { isLoading: isSending, error, sendRequest } = useHttp();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -15,8 +17,21 @@ export default function Signup() {
     }
 
     setPasswordsAreNotEqual(false);
-    console.log(data);
 
+    // Send the request
+    sendRequest("http://localhost:3000/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: data["first-name"],
+        email: data.email,
+        password: data.password,
+      }),
+    });
+
+    // Optionally handle success or error states
     event.target.reset();
   }
 
@@ -77,12 +92,14 @@ export default function Signup() {
         </label>
       </div>
 
+      {error && <p>{error}</p>}
+
       <p className="form-actions">
         <button type="reset" className="button button-flat">
           Reset
         </button>
         <button type="submit" className="button">
-          Sign up
+          {isSending ? "Signing up..." : "Sign up"}
         </button>
       </p>
     </form>

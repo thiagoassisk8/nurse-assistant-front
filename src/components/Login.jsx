@@ -1,9 +1,26 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import SignUp from "./SignUp";
+import useHttp from "../hooks/useHttp.js";
+import UserContext from "../store/UserContext";
+
+const requestConfig = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
 
 export default function Login() {
   const [emailIsInvalid, setEmailIsInvalid] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
+  const userCtx = useContext(UserContext);
+
+  const {
+    data,
+    isLoading: isSending,
+    error,
+    sendRequest,
+  } = useHttp("http://localhost:3000/auth/login", requestConfig);
 
   const email = useRef();
   const password = useRef();
@@ -22,6 +39,13 @@ export default function Login() {
     }
 
     setEmailIsInvalid(false);
+
+    sendRequest(
+      JSON.stringify({
+        email: enteredEmail,
+        password: enteredPassword,
+      })
+    );
   }
 
   function handleSignUpClick() {
@@ -30,6 +54,11 @@ export default function Login() {
 
   if (showSignUp) {
     return <SignUp />;
+  }
+
+  if (data && !error) {
+    userCtx.login(data.token);
+    return <p>Login successful!</p>;
   }
 
   return (
@@ -49,6 +78,8 @@ export default function Login() {
         </div>
       </div>
 
+      {error && <p>{error}</p>}
+
       <p className="form-actions">
         <button
           type="button"
@@ -58,7 +89,7 @@ export default function Login() {
           Sign Up
         </button>
         <button type="submit" className="button">
-          Login
+          {isSending ? "Logging in..." : "Login"}
         </button>
       </p>
     </form>
