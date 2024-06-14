@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+// UserContextProvider.js
+import { createContext, useState, useEffect } from "react";
 
 const UserContext = createContext({
   isLoggedIn: false,
@@ -8,15 +9,24 @@ const UserContext = createContext({
 });
 
 export function UserContextProvider(props) {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   const loginHandler = (token) => {
     setToken(token);
+    localStorage.setItem("token", token);
   };
 
   const logoutHandler = () => {
     setToken(null);
+    localStorage.removeItem("token");
   };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      loginHandler(storedToken);
+    }
+  }, []);
 
   const contextValue = {
     isLoggedIn: !!token,

@@ -1,39 +1,42 @@
 import { useState } from "react";
-import useHttp from "../hooks/useHttp.js";
+import useHttp from "../hooks/useRightHttp.js";
 
 export default function Signup() {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
   const { isLoading: isSending, error, sendRequest } = useHttp();
 
-  function handleSubmit(event) {
+  const handleSignupSuccess = (data) => {};
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const fd = new FormData(event.target);
-    const data = Object.fromEntries(fd.entries());
-
-    if (data.password !== data["confirm-password"]) {
+    if (password !== confirmPassword) {
       setPasswordsAreNotEqual(true);
       return;
     }
 
     setPasswordsAreNotEqual(false);
 
-    // Send the request
-    sendRequest("http://localhost:3000/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: data["first-name"],
-        email: data.email,
-        password: data.password,
-      }),
-    });
+    const requestData = {
+      name,
+      email,
+      password,
+    };
 
-    // Optionally handle success or error states
-    event.target.reset();
-  }
+    sendRequest(
+      {
+        url: "http://localhost:3000/users/register",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: requestData,
+      },
+      handleSignupSuccess
+    );
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -42,13 +45,27 @@ export default function Signup() {
 
       <div className="control">
         <label htmlFor="email">Email</label>
-        <input id="email" type="email" name="email" required />
+        <input
+          id="email"
+          type="email"
+          name="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
 
       <div className="control-row">
         <div className="control">
           <label htmlFor="first-name">Name</label>
-          <input type="text" id="first-name" name="first-name" required />
+          <input
+            type="text"
+            id="first-name"
+            name="first-name"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
       </div>
 
@@ -61,6 +78,8 @@ export default function Signup() {
             name="password"
             required
             minLength={6}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <div className="control-error">
             {passwordsAreNotEqual && <p>Passwords must match</p>}
@@ -74,6 +93,8 @@ export default function Signup() {
             type="password"
             name="confirm-password"
             required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
       </div>
