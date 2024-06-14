@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useHttp from "../hooks/useRightHttp.js";
+import useHttp from "../hooks/useSignUpHttp.js";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
