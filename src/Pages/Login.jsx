@@ -1,6 +1,7 @@
 import { useRef, useState, useContext } from "react";
 import SignUp from "./SignUp";
-import useHttp from "../hooks/useHttp.js";
+import Header from "../components/Header";
+import useHttp from "../hooks/useHttp";
 import UserContext from "../store/UserContext";
 import { useNavigate } from "react-router-dom";
 
@@ -63,36 +64,44 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
+    <div>
+      <Header />
+      <form onSubmit={handleSubmit}>
+        <h2>Login</h2>
 
-      <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" ref={email} />
-          <div>{emailIsInvalid && <p>Please enter valid value</p>}</div>
+        <div className="control-row">
+          <div className="control no-margin">
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" name="email" ref={email} />
+            <div>{emailIsInvalid && <p>Please enter valid value</p>}</div>
+          </div>
+
+          <div className="control no-margin">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              ref={password}
+            />
+          </div>
         </div>
 
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" ref={password} />
-        </div>
-      </div>
+        {error && <p>{error}</p>}
 
-      {error && <p>{error}</p>}
-
-      <p className="form-actions">
-        <button
-          type="button"
-          className="button button-flat"
-          onClick={handleSignUpClick}
-        >
-          Sign Up
-        </button>
-        <button type="submit" className="button">
-          {isSending ? "Logging in..." : "Login"}
-        </button>
-      </p>
-    </form>
+        <p className="form-actions">
+          <button
+            type="button"
+            className="button button-flat"
+            onClick={handleSignUpClick}
+          >
+            Sign Up
+          </button>
+          <button type="submit" className="button">
+            {isSending ? "Logging in..." : "Login"}
+          </button>
+        </p>
+      </form>
+    </div>
   );
 }

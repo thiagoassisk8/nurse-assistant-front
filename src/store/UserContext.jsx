@@ -4,6 +4,12 @@ const UserContext = createContext({
   isLoggedIn: false,
   token: null,
   login: (token) => {},
+  logout: () => {},
+  user: {
+    id: 564564654,
+    name: "Pedro",
+    email: "pedro@site.com",
+  },
 });
 
 export function UserContextProvider(props) {
@@ -12,6 +18,11 @@ export function UserContextProvider(props) {
   const loginHandler = (token) => {
     setToken(token);
     localStorage.setItem("token", token);
+  };
+
+  const logoutHandler = () => {
+    setToken(null);
+    localStorage.removeItem("token");
   };
 
   useEffect(() => {
@@ -25,6 +36,7 @@ export function UserContextProvider(props) {
     isLoggedIn: !!token,
     token: token,
     login: loginHandler,
+    logout: logoutHandler,
   };
 
   return (
