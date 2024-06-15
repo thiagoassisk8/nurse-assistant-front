@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import useHttp from "../hooks/useSignUpHttp.js";
 
 export default function Signup() {
@@ -7,9 +7,8 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const { isLoading: isSending, error, sendRequest } = useHttp();
-
-  const handleSignupSuccess = (data) => {};
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,6 +24,10 @@ export default function Signup() {
       name,
       email,
       password,
+    };
+    const handleSignupSuccess = () => {
+      // Logic to handle successful signup
+      console.log("Signup successful!");
     };
 
     sendRequest(
@@ -42,7 +45,6 @@ export default function Signup() {
     <form onSubmit={handleSubmit}>
       <h2>Welcome on board!</h2>
       <p>We just need a little bit of data from you to get you started 🚀</p>
-
       <div className="control">
         <label htmlFor="email">Email</label>
         <input
@@ -54,7 +56,6 @@ export default function Signup() {
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-
       <div className="control-row">
         <div className="control">
           <label htmlFor="first-name">Name</label>
@@ -68,7 +69,6 @@ export default function Signup() {
           />
         </div>
       </div>
-
       <div className="control-row">
         <div className="control">
           <label htmlFor="password">Password</label>
@@ -98,9 +98,7 @@ export default function Signup() {
           />
         </div>
       </div>
-
       <hr />
-
       <div className="control">
         <label htmlFor="terms-and-conditions">
           <input
@@ -112,7 +110,6 @@ export default function Signup() {
           I agree to the terms and conditions
         </label>
       </div>
-
       {error && <p>{error}</p>}
 
       <p className="form-actions">

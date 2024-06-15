@@ -1,17 +1,29 @@
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link as RouterLink,
+} from "react-router-dom";
+
 import Header from "./components/Header.jsx";
 import Login from "./components/Login.jsx";
-import { UserContextProvider } from "../src/store/UserContext.jsx";
+import ProtectedPage from "./components/ProtectedPage.jsx";
 
-function App() {
+const App = () => {
   return (
-    <UserContextProvider>
-      <Header />
-      <main>
-        <Login />
-        {/* <Signup /> */}
-      </main>
-    </UserContextProvider>
+    <Router>
+      <div className="App">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/protected" element={<ProtectedPage />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

@@ -2,6 +2,7 @@ import { useRef, useState, useContext } from "react";
 import SignUp from "./SignUp";
 import useHttp from "../hooks/useHttp.js";
 import UserContext from "../store/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const requestConfig = {
   method: "POST",
@@ -14,7 +15,7 @@ export default function Login() {
   const [emailIsInvalid, setEmailIsInvalid] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
   const userCtx = useContext(UserContext);
-
+  const navigate = useNavigate();
   const {
     data,
     isLoading: isSending,
@@ -58,7 +59,7 @@ export default function Login() {
 
   if (data && !error) {
     userCtx.login(data.token);
-    return <p>Login successful!</p>;
+    navigate("/protected");
   }
 
   return (
