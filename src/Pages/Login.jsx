@@ -11,18 +11,18 @@ const requestConfig = {
     "Content-Type": "application/json",
   },
 };
-
 export default function Login() {
   const [emailIsInvalid, setEmailIsInvalid] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
   const userCtx = useContext(UserContext);
+  const apiUrl = "https://nurse-assistant.onrender.com";
   const navigate = useNavigate();
   const {
     data,
     isLoading: isSending,
     error,
     sendRequest,
-  } = useHttp("http://localhost:3000/auth/login", requestConfig);
+  } = useHttp(`${apiUrl}/auth/login`, requestConfig);
 
   const email = useRef();
   const password = useRef();
