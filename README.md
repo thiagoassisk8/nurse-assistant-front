@@ -1,6 +1,3 @@
-To include images in your Markdown README file, you typically reference them using relative paths. Here's how you can structure your README to include the two screenshots:
-
-````markdown
 # Nurse Marketplace Frontend
 
 This is the frontend in React for the nurse marketplace application, connected to the Node.js backend.
@@ -21,7 +18,6 @@ git clone https://github.com/thiagoassisk8/nurse-assistant-front
 cd nurse-assistant-front
 npm install
 ```
-````
 
 ## Backend Configuration
 
