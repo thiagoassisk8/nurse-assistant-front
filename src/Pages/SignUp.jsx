@@ -12,7 +12,7 @@ export default function Signup() {
   const [isRegistered, setIsRegistered] = useState(false);
   const { isLoading: isSending, error, sendRequest } = useHttp();
   const navigate = useNavigate();
-  const apiUrl = "https://nurse-assistant.onrender.com";
+  const apiUrl = "http://localhost:3000";
   const handleSubmit = async (event) => {
     event.preventDefault();
 

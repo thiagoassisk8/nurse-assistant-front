@@ -15,7 +15,7 @@ export default function Login() {
   const [emailIsInvalid, setEmailIsInvalid] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
   const userCtx = useContext(UserContext);
-  const apiUrl = "https://nurse-assistant.onrender.com";
+  const apiUrl = "http://localhost:3000";
   const navigate = useNavigate();
   const {
     data,
